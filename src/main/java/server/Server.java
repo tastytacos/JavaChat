@@ -12,6 +12,12 @@ public class Server {
     public synchronized static List<UserSession> getSessions() {
         return sessions;
     }
+//    private static String fileName = System.getProperty()
+    private static int messagesToGet = 10;
+
+    public static int getMessagesToGet() {
+        return messagesToGet;
+    }
 
     private static List<UserSession> sessions = new ArrayList<>();
 

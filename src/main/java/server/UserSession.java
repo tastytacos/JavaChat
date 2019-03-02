@@ -5,6 +5,7 @@ import org.joda.time.LocalTime;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
 public class UserSession extends Thread {
     private Socket socket;
     private DataOutputStream outputStream;
-
+    private MessageManager manager = FileManager.getInstance(new File("Messages.txt"));
     private DataInputStream inputStream;
 
     UserSession(Socket socket) {
@@ -30,8 +31,17 @@ public class UserSession extends Thread {
     @Override
     public void run() {
         try {
-            outputStream.writeUTF("Welcome to the chat, User " + this.getId());
-            outputStream.writeUTF("Enjoy chatting");
+            sendMessageToUser("Welcome to the chat, User " + this.getId());
+            sendMessageToUser("Enjoy chatting");
+            List<String> previousMessages = manager.getNMessages(Server.getMessagesToGet());
+            if (previousMessages == null){
+                sendMessageToUser("You are first in this chat!");
+            }
+            else{
+                sendMessageToUser("----------------------------");
+                previousMessages.forEach(this::sendMessageToUser);
+                sendMessageToUser("----------------------------");
+            }
             while (true) {
                 String userInput = inputStream.readUTF();
                 log(userInput);
@@ -47,12 +57,23 @@ public class UserSession extends Thread {
         }
     }
 
+    private void sendMessageToUser(String message){
+        try {
+            outputStream.writeUTF(message);
+        }catch (IOException e){
+            System.out.println("Message delivery failed");
+            e.printStackTrace();
+        }
+    }
+
     private LocalTime getTime() {
         return new LocalTime();
     }
 
     private void log(String userInput) {
-        System.out.println("On " + getTime() + " User " + getId() + " wrote - " + userInput);
+        String message = "On " + getTime() + " User " + getId() + " wrote - " + userInput;
+        System.out.println(message);
+        manager.writeMessage(message);
     }
 
     private void disconnect() {
