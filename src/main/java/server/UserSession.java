@@ -1,7 +1,6 @@
 package server;
 
 import lombok.Data;
-import org.joda.time.JodaTimePermission;
 import org.joda.time.LocalTime;
 
 import java.io.DataInputStream;
@@ -13,7 +12,6 @@ import java.util.List;
 @Data
 public class UserSession extends Thread {
     private Socket socket;
-
     private DataOutputStream outputStream;
 
     private DataInputStream inputStream;
@@ -31,17 +29,18 @@ public class UserSession extends Thread {
 
     @Override
     public void run() {
-        try (DataInputStream in = new DataInputStream(socket.getInputStream());
-             DataOutputStream out = new DataOutputStream(socket.getOutputStream())) {
-            out.writeUTF("Welcome to the chat, User " + this.getId());
-            out.writeUTF("Enjoy chatting");
+        try {
+            outputStream.writeUTF("Welcome to the chat, User " + this.getId());
+            outputStream.writeUTF("Enjoy chatting");
             while (true) {
-                String userInput = in.readUTF();
+                String userInput = inputStream.readUTF();
                 log(userInput);
                 if (userInput.equalsIgnoreCase("quit")) {
+                    sendEveryoneMessage("User " + this.getId() + " left the chat");
                     disconnect();
+                    break;
                 }
-                sendMessage(userInput);
+                sendEveryoneMessage(userInput);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -53,7 +52,7 @@ public class UserSession extends Thread {
     }
 
     private void log(String userInput) {
-        System.out.println("On " + getTime() + " User " + getId() +  " wrote - " + userInput);
+        System.out.println("On " + getTime() + " User " + getId() + " wrote - " + userInput);
     }
 
     private void disconnect() {
@@ -68,7 +67,7 @@ public class UserSession extends Thread {
         }
     }
 
-    private void sendMessage(String text) {
+    private void sendEveryoneMessage(String text) {
         List<UserSession> users = Server.getSessions();
         users.forEach(user -> {
             String message = user != this ? handleMessage(text) : "You on " + getTime() + ": " + text;

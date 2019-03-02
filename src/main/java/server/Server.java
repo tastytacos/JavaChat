@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Server {
 
-    public static List<UserSession> getSessions() {
+    public synchronized static List<UserSession> getSessions() {
         return sessions;
     }
 

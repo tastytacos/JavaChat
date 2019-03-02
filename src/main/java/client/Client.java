@@ -8,7 +8,7 @@ import java.net.UnknownHostException;
 import java.util.Scanner;
 
 public class Client {
-
+    private ServerListener serverListener;
     private static int port = 1234;
     private Socket socket;
     private DataInputStream inputStream;
@@ -35,7 +35,8 @@ public class Client {
             return false;
         }
 
-        new ServerListener(this).start();
+        serverListener = new ServerListener(this);
+        serverListener.start();
         return true;
     }
 
@@ -50,10 +51,10 @@ public class Client {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             String message = scanner.nextLine();
+            client.sendMessage(message);
             if (message.equalsIgnoreCase("quit")) {
                 break;
             }
-            client.sendMessage(message);
         }
         client.disconnect();
     }
@@ -63,6 +64,7 @@ public class Client {
             outputStream.close();
             inputStream.close();
             socket.close();
+            serverListener.setListeningOff();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -80,24 +82,32 @@ public class Client {
 
     class ServerListener extends Thread {
         Client client;
+        private volatile boolean listening;
+
+        void setListenerOn() {
+            listening = true;
+        }
+
+        void setListeningOff() {
+            listening = false;
+        }
 
         public ServerListener(Client client) {
             this.client = client;
+            listening = true;
         }
 
         @Override
         public void run() {
-            while (true) {
+            while (listening) {
                 try {
                     String serverMessage = inputStream.readUTF();
                     System.out.println(serverMessage);
-                    System.out.print(" >");
                 } catch (Exception e) {
-                    System.out.println("Server failed!");
-                    e.printStackTrace();
+                    System.out.println("You are offline");
                     client.disconnect();
+                    break;
                 }
-
             }
         }
     }
