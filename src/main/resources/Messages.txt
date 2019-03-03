@@ -1,0 +1,23 @@
+On 18:01:45.534 User 10 wrote - Hello, everyone
+On 18:01:57.916 User 10 wrote - Seems, like i'm first here...
+On 18:02:18.248 User 11 wrote - Hello
+On 18:05:15.879 User 11 wrote - Hello, again, User 10
+On 18:05:29.560 User 10 wrote - hi, what's upp?
+On 18:05:39.726 User 11 wrote - Ничего, потихоньку
+On 18:05:55.545 User 11 wrote - А ты как?
+On 18:06:09.498 User 10 wrote - Та тоже ок. Жду вот юзеря 12
+On 18:06:16.316 User 11 wrote - да, ждём
+On 18:06:44.791 User 12 wrote - Hey, guys 
+On 18:06:52.835 User 12 wrote - I am here!
+On 18:07:01.388 User 12 wrote - Did you see the match?
+On 18:07:17.065 User 11 wrote - Yup
+On 18:07:21.081 User 11 wrote - It was great
+On 18:07:25.739 User 10 wrote - Awesome
+On 19:11:13.795 User 10 wrote - Hello
+On 19:43:00.241 Johnson wrote - Hi, everyone
+On 19:43:29.909 Max wrote - Hi, Johnson!
+On 19:43:35.959 Max wrote - Whats' upp?
+On 19:43:45.102 Johnson wrote - Hey, MAx
+On 19:43:52.971 Johnson wrote - What are you doing?
+On 19:43:59.987 Max wrote - Nothing
+On 19:44:08.808 Max wrote - Wathcing movie

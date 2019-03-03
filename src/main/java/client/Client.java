@@ -42,13 +42,16 @@ public class Client {
 
     public static void main(String a[]) {
         Client client = null;
+        Scanner scanner = new Scanner(System.in);
         try {
             client = new Client(InetAddress.getLocalHost());
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
         client.start();
-        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter your nickname: ");
+        String userName = scanner.nextLine();
+        client.sendMessage(userName);
         while (true) {
             String message = scanner.nextLine();
             client.sendMessage(message);

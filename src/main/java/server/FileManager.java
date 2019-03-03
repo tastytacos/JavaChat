@@ -41,7 +41,10 @@ public class FileManager implements MessageManager {
             while ((message = randomAccessFile.readLine()) != null) {
                 messages.add(message);
             }
-            return messages.subList(messages.size() - messagesAmount, messages.size());
+            if (messages.size() > messagesAmount){
+                return messages.subList(messages.size() - messagesAmount, messages.size());
+            }
+            return messages;
         } catch (IOException e) {
             e.printStackTrace();
         }

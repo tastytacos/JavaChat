@@ -1,6 +1,7 @@
 package server;
 
 
+import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -12,7 +13,13 @@ public class Server {
     public synchronized static List<UserSession> getSessions() {
         return sessions;
     }
-//    private static String fileName = System.getProperty()
+    private static String filename = "Messages.txt";
+
+    public static File getMessagesStorage() {
+        return MessagesStorage;
+    }
+
+    private static File MessagesStorage = new File(System.getProperty("user.dir") + "/src/main/resources/" + filename);
     private static int messagesToGet = 10;
 
     public static int getMessagesToGet() {

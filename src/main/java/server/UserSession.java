@@ -14,10 +14,12 @@ import java.util.List;
 public class UserSession extends Thread {
     private Socket socket;
     private DataOutputStream outputStream;
-    private MessageManager manager = FileManager.getInstance(new File("Messages.txt"));
+    private MessageManager manager = FileManager.getInstance(Server.getMessagesStorage());
     private DataInputStream inputStream;
+    private String username;
 
     UserSession(Socket socket) {
+        System.out.println(Server.getMessagesStorage().getAbsolutePath());
         this.socket = socket;
         try {
             outputStream = new DataOutputStream(socket.getOutputStream());
@@ -31,13 +33,13 @@ public class UserSession extends Thread {
     @Override
     public void run() {
         try {
-            sendMessageToUser("Welcome to the chat, User " + this.getId());
+            username = inputStream.readUTF();
+            sendMessageToUser("Welcome to the chat, " + username);
             sendMessageToUser("Enjoy chatting");
             List<String> previousMessages = manager.getNMessages(Server.getMessagesToGet());
-            if (previousMessages == null){
+            if (previousMessages == null) {
                 sendMessageToUser("You are first in this chat!");
-            }
-            else{
+            } else {
                 sendMessageToUser("----------------------------");
                 previousMessages.forEach(this::sendMessageToUser);
                 sendMessageToUser("----------------------------");
@@ -57,10 +59,10 @@ public class UserSession extends Thread {
         }
     }
 
-    private void sendMessageToUser(String message){
+    private void sendMessageToUser(String message) {
         try {
             outputStream.writeUTF(message);
-        }catch (IOException e){
+        } catch (IOException e) {
             System.out.println("Message delivery failed");
             e.printStackTrace();
         }
@@ -71,14 +73,14 @@ public class UserSession extends Thread {
     }
 
     private void log(String userInput) {
-        String message = "On " + getTime() + " User " + getId() + " wrote - " + userInput;
+        String message = "On " + getTime() + " " + username + " wrote - " + userInput;
         System.out.println(message);
         manager.writeMessage(message);
     }
 
     private void disconnect() {
         try {
-            System.out.println("User " + this.getId() + " logged out");
+            System.out.println(username + " logged out");
             Server.getSessions().remove(this);
             inputStream.close();
             outputStream.close();
@@ -91,7 +93,7 @@ public class UserSession extends Thread {
     private void sendEveryoneMessage(String text) {
         List<UserSession> users = Server.getSessions();
         users.forEach(user -> {
-            String message = user != this ? handleMessage(text) : "You on " + getTime() + ": " + text;
+            String message = handleMessage(text);
             try {
                 user.getOutputStream().writeUTF(message);
             } catch (IOException e) {
@@ -101,7 +103,7 @@ public class UserSession extends Thread {
     }
 
     private String handleMessage(String input) {
-        return "User " + this.getId() + " on " + getTime() + ": " + input;
+        return username + " on " + getTime() + ": " + input;
     }
 
 
