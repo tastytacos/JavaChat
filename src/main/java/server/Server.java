@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Server {
-
+    private static String adminUsername = "Admin";
     public synchronized static List<UserSession> getSessions() {
         return sessions;
     }
@@ -22,7 +22,7 @@ public class Server {
     private static File MessagesStorage = new File(System.getProperty("user.dir") + "/src/main/resources/" + filename);
     private static int messagesToGet = 10;
 
-    public static int getMessagesToGet() {
+    public static int getAmountMessagesToGet() {
         return messagesToGet;
     }
 
@@ -43,5 +43,9 @@ public class Server {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static String getAdminUsername() {
+        return adminUsername;
     }
 }

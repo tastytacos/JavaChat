@@ -1,6 +1,10 @@
 package client;
 
 
+import message.Message;
+import message.TextMessage;
+import org.joda.time.LocalTime;
+
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -11,8 +15,8 @@ public class Client {
     private ServerListener serverListener;
     private static int port = 1234;
     private Socket socket;
-    private DataInputStream inputStream;
-    private DataOutputStream outputStream;
+    private ObjectInputStream inputStream;
+    private ObjectOutputStream outputStream;
     private InetAddress server;
 
     public Client(InetAddress server) {
@@ -28,8 +32,8 @@ public class Client {
             return false;
         }
         try {
-            inputStream = new DataInputStream(socket.getInputStream());
-            outputStream = new DataOutputStream(socket.getOutputStream());
+            inputStream = new ObjectInputStream(socket.getInputStream());
+            outputStream = new ObjectOutputStream(socket.getOutputStream());
         } catch (IOException e) {
             e.printStackTrace();
             return false;
@@ -51,10 +55,10 @@ public class Client {
         client.start();
         System.out.println("Enter your nickname: ");
         String userName = scanner.nextLine();
-        client.sendMessage(userName);
+        client.sendMessage(new Message(userName, new LocalTime()));
         while (true) {
             String message = scanner.nextLine();
-            client.sendMessage(message);
+            client.sendMessage(new TextMessage(message, userName, new LocalTime()));
             if (message.equalsIgnoreCase("quit")) {
                 break;
             }
@@ -74,9 +78,9 @@ public class Client {
 
     }
 
-    private void sendMessage(String message) {
+    private void sendMessage(Message textMessage) {
         try {
-            outputStream.writeUTF(message);
+            outputStream.writeObject(textMessage);
         } catch (IOException e) {
             System.out.println("Message sending failed");
             e.printStackTrace();
@@ -104,8 +108,8 @@ public class Client {
         public void run() {
             while (listening) {
                 try {
-                    String serverMessage = inputStream.readUTF();
-                    System.out.println(serverMessage);
+                    TextMessage serverTextMessage = (TextMessage) inputStream.readObject();
+                    displayMessage(serverTextMessage);
                 } catch (Exception e) {
                     System.out.println("You are offline");
                     client.disconnect();
@@ -113,6 +117,11 @@ public class Client {
                 }
             }
         }
+    }
+
+    private void displayMessage(TextMessage textMessage) {
+        System.out.println(textMessage.getMessageTime() + " " + textMessage.getMessageAuthor() +
+                " > " + textMessage.getMessageText());
     }
 }
 
