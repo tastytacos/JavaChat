@@ -12,8 +12,6 @@ public class UserSession extends Thread {
     private Socket socket;
 
     private MessageManager manager = FileManager.getInstance(Server.getMessagesStorage());
-    //    private DataOutputStream outputStream;
-//    private DataInputStream inputStream;
     private ObjectOutputStream outputStream;
     private ObjectInputStream inputStream;
 
