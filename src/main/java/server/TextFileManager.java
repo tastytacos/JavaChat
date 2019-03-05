@@ -1,5 +1,7 @@
-package message;
+package server;
 
+import message.Message;
+import message.TextMessage;
 import org.joda.time.LocalTime;
 
 import java.io.*;
@@ -7,19 +9,19 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FileManager implements MessageManager {
-    private static volatile FileManager instance;
+public class TextFileManager implements MessageManager {
+    private static volatile TextFileManager instance;
     private File messagesBaseFile;
-
-    private FileManager(File messagesBaseFile) {
+    private static String messageDelimiter = "--";
+    private TextFileManager(File messagesBaseFile) {
         this.messagesBaseFile = messagesBaseFile;
     }
 
-    public static FileManager getInstance(File messagesBase) {
+    public static TextFileManager getInstance(File messagesBase) {
         if (instance == null) {
-            synchronized (FileManager.class) {
+            synchronized (TextFileManager.class) {
                 if (instance == null) {
-                    instance = new FileManager(messagesBase);
+                    instance = new TextFileManager(messagesBase);
                 }
             }
         }
@@ -30,8 +32,8 @@ public class FileManager implements MessageManager {
     public void writeMessage(Message message) {
         try (FileWriter fileWriter = new FileWriter(messagesBaseFile, true)) {
             TextMessage textMessage = (TextMessage) message;
-            fileWriter.append("On " + textMessage.getMessageTime());
-            fileWriter.append(" user " + textMessage.getMessageAuthor() + " wrote - ");
+            fileWriter.append(messageDelimiter + textMessage.getMessageTime());
+            fileWriter.append(messageDelimiter + textMessage.getMessageAuthor() + messageDelimiter);
             fileWriter.append(textMessage.getMessageText());
             fileWriter.append(System.lineSeparator());
         } catch (IOException e) {
@@ -61,14 +63,18 @@ public class FileManager implements MessageManager {
     }
 
     private org.joda.time.LocalTime handleTime(String line) {
-        return null;
+        String[] strings = line.split(messageDelimiter);
+        LocalTime localTime = LocalTime.parse(strings[1]);
+        return localTime;
     }
 
     private String handleAuthor(String line) {
-        return null;
+        String[] strings = line.split(messageDelimiter);
+        return strings[2];
     }
 
     private String handleMessageText(String line) {
-        return null;
+        String[] strings = line.split(messageDelimiter);
+        return strings[3];
     }
 }

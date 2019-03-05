@@ -1,4 +1,7 @@
-package message;
+package server;
+
+import message.Message;
+import message.TextMessage;
 
 import java.util.List;
 

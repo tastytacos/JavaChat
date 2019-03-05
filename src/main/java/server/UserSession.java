@@ -11,7 +11,7 @@ import java.util.List;
 public class UserSession extends Thread {
     private Socket socket;
 
-    private MessageManager manager = FileManager.getInstance(Server.getMessagesStorage());
+    private MessageManager manager = TextFileManager.getInstance(Server.getMessagesStorage());
     private ObjectOutputStream outputStream;
     private ObjectInputStream inputStream;
 
@@ -45,7 +45,7 @@ public class UserSession extends Thread {
             sendMessageToUser(MessageFactory.getTextMessage("Welcome to the chat, " + username));
             sendMessageToUser(MessageFactory.getTextMessage("Enjoy chatting"));
             sendEveryoneExceptUserMessage(MessageFactory.getTextMessage("User " + username + " joined the chat"));
-//            showLastNMessages(Server.getAmountMessagesToGet());
+            showLastNMessages(Server.getAmountMessagesToGet());
             while (true) {
                 TextMessage userMessage = (TextMessage) inputStream.readObject();
                 log(userMessage);
@@ -62,7 +62,7 @@ public class UserSession extends Thread {
     }
 
     private void showLastNMessages(int amountMessages) {
-        List<TextMessage> previousMessages = manager.getNTextMessages(Server.getAmountMessagesToGet());
+        List<TextMessage> previousMessages = manager.getNTextMessages(amountMessages);
         if (previousMessages == null) {
             sendMessageToUser(MessageFactory.getTextMessage("You are first in this chat!"));
         } else {
@@ -102,7 +102,8 @@ public class UserSession extends Thread {
     }
 
     private void log(Message message) {
-        String sout = "On " + message.getMessageTime() + " " + username + " wrote - " + message;
+        TextMessage textMessage = (TextMessage) message;
+        String sout = "On " + textMessage.getMessageTime() + " " + username + " wrote - " + textMessage.getMessageText();
         System.out.println(sout);
         manager.writeMessage(message);
     }
