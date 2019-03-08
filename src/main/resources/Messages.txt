@@ -53,3 +53,16 @@
 --00:36:43.903--Jock--Hello
 --10:46:19.608--Jack--Hello
 --10:46:36.104--Johnson--Hi, Jack
+--22:09:29.937--Trim--Hello, everyone
+--22:09:44.910--Max Plank--Hi, Trim!
+--22:09:50.276--Max Plank--Good to see u
+--22:10:00.126--Trim--Hi, Max Plank!
+--22:10:08.856--Trim--Used to read your works
+--22:10:23.116--Trim--You've made a great job!
+--22:10:31.699--Max Plank--yep
+--22:10:35.504--Max Plank--Thank's
+--22:10:47.646--Trim--quit
+--22:10:57.801--Max Plank--okay
+--22:11:01.923--Max Plank--i am going
+--22:11:03.246--Max Plank--quit
+--22:11:48.553--Eye--quit

@@ -1,6 +1,7 @@
 package client;
 
 
+import manager.ConfigurationDataManager;
 import message.Message;
 import message.TextMessage;
 import org.joda.time.LocalTime;
@@ -13,21 +14,21 @@ import java.util.Scanner;
 
 public class Client {
     private ServerListener serverListener;
-    private static int port = 1234;
+    private static int port = Integer.parseInt(ConfigurationDataManager.getValueByXMLTag("port-number"));
     private Socket socket;
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
-    private InetAddress server;
+    private InetAddress serverAddress;
 
-    public Client(InetAddress server) {
-        this.server = server;
+    public Client(InetAddress serverAddress) {
+        this.serverAddress = serverAddress;
     }
 
     private boolean start() {
         try {
-            socket = new Socket(server, port);
+            socket = new Socket(serverAddress, port);
         } catch (IOException e) {
-            System.out.println("Error connecting to the server");
+            System.out.println("Error connecting to the serverAddress");
             e.printStackTrace();
             return false;
         }
@@ -35,7 +36,7 @@ public class Client {
             inputStream = new ObjectInputStream(socket.getInputStream());
             outputStream = new ObjectOutputStream(socket.getOutputStream());
         } catch (IOException e) {
-            System.out.println("Error connecting to the server");
+            System.out.println("Error connecting to the serverAddress");
             e.printStackTrace();
             return false;
         }
