@@ -35,6 +35,7 @@ public class Client {
             inputStream = new ObjectInputStream(socket.getInputStream());
             outputStream = new ObjectOutputStream(socket.getOutputStream());
         } catch (IOException e) {
+            System.out.println("Error connecting to the server");
             e.printStackTrace();
             return false;
         }
@@ -52,7 +53,10 @@ public class Client {
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
-        client.start();
+        if (!client.start()){
+            client.disconnect();
+            return;
+        }
         System.out.println("Enter your nickname: ");
         String userName = scanner.nextLine();
         client.sendMessage(new Message(userName, new LocalTime()));
@@ -118,34 +122,8 @@ public class Client {
             }
         }
     }
-
     private void displayMessage(TextMessage textMessage) {
         System.out.println(textMessage.getMessageTime() + " " + textMessage.getMessageAuthor() +
                 " > " + textMessage.getMessageText());
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
