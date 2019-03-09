@@ -1,23 +1,68 @@
-On 18:01:45.534 User 10 wrote - Hello, everyone
-On 18:01:57.916 User 10 wrote - Seems, like i'm first here...
-On 18:02:18.248 User 11 wrote - Hello
-On 18:05:15.879 User 11 wrote - Hello, again, User 10
-On 18:05:29.560 User 10 wrote - hi, what's upp?
-On 18:05:39.726 User 11 wrote - Ничего, потихоньку
-On 18:05:55.545 User 11 wrote - А ты как?
-On 18:06:09.498 User 10 wrote - Та тоже ок. Жду вот юзеря 12
-On 18:06:16.316 User 11 wrote - да, ждём
-On 18:06:44.791 User 12 wrote - Hey, guys 
-On 18:06:52.835 User 12 wrote - I am here!
-On 18:07:01.388 User 12 wrote - Did you see the match?
-On 18:07:17.065 User 11 wrote - Yup
-On 18:07:21.081 User 11 wrote - It was great
-On 18:07:25.739 User 10 wrote - Awesome
-On 19:11:13.795 User 10 wrote - Hello
-On 19:43:00.241 Johnson wrote - Hi, everyone
-On 19:43:29.909 Max wrote - Hi, Johnson!
-On 19:43:35.959 Max wrote - Whats' upp?
-On 19:43:45.102 Johnson wrote - Hey, MAx
-On 19:43:52.971 Johnson wrote - What are you doing?
-On 19:43:59.987 Max wrote - Nothing
-On 19:44:08.808 Max wrote - Wathcing movie
+--18:01:45.534--User 10--Hello, everyone
+--18:01:57.916--User 10--Seems, like i'm first here...
+--18:02:18.248--User 11--Hello
+--18:05:15.879--User 11--Hello, again, User 10
+--18:05:29.560--User 10--hi, what's upp?
+--18:05:39.726--User 11--Ничего, потихоньку
+--18:05:55.545--User 11--А ты как?
+--18:06:09.498--User 10--Та тоже ок. Жду вот юзеря 12
+--18:06:16.316--User 11--да, ждём
+--18:06:44.791--User 12--Hey, guys
+--18:06:52.835--User 12--I am here!
+--18:07:01.388--User 12--Did you see the match?
+--18:07:17.065--User 11--Yup
+--18:07:21.081--User 11--It was great
+--18:07:25.739--User 10--Awesome
+--19:11:13.795--User 10--Hello
+--19:43:00.241--Johnson--Hi, everyone
+--19:43:29.909--Max--Hi, Johnson!
+--19:43:35.959--Max--Whats' upp?
+--19:43:45.102--Johnson--Hey, MAx
+--19:43:52.971--Johnson--What are you doing?
+--19:43:59.987--Max--Nothing
+--19:44:08.808--Max--Wathcing movie
+--20:29:23.491--James Pluff--Hello, everyone!
+--20:29:35.391--James Pluff--Seems, like i'm first in this chat...
+--20:29:57.606--Donald Trump--Hi
+--20:30:05.941--Donald Trump--I am the President of US
+--20:30:22.696--James Pluff--Hi, mr. Trump! Good to see you
+--20:30:39.661--Donald Trump--Yep
+--20:30:49.500--Donald Trump--I have some business
+--20:30:52.726--Donald Trump--Need to go
+--20:30:58.870--Donald Trump--Good bye
+--20:31:03.002--Donald Trump--quit
+--20:31:49.800--JAck--hello
+--20:31:55.698--James Pluff--Bye
+--20:31:59.539--James Pluff--quit
+--00:32:47.163--Jack--Hi, I am Jack
+--00:33:29.593--James--oh, hi Jack! Already here. Have you seen the match?
+--00:33:50.327--Jack--Hi
+--00:33:52.012--Jack--Yep
+--00:33:57.939--Jack--Good game from AJAX
+--00:34:06.185--Jack--Don't you think so?
+--00:34:13.113--James--Really great
+--00:34:25.801--James--Hope they keep playing in such style
+--00:34:37.613--Jack--Yep
+--00:34:38.744--Jack--Ok
+--00:34:44.412--Jack--It's time for me to go
+--00:34:46.596--Jack--Bye
+--00:34:49.764--Jack--quit
+--00:35:00.486--James--Bye
+--00:35:04.506--James--See you
+--00:35:07.024--James--quit
+--00:36:43.903--Jock--Hello
+--10:46:19.608--Jack--Hello
+--10:46:36.104--Johnson--Hi, Jack
+--22:09:29.937--Trim--Hello, everyone
+--22:09:44.910--Max Plank--Hi, Trim!
+--22:09:50.276--Max Plank--Good to see u
+--22:10:00.126--Trim--Hi, Max Plank!
+--22:10:08.856--Trim--Used to read your works
+--22:10:23.116--Trim--You've made a great job!
+--22:10:31.699--Max Plank--yep
+--22:10:35.504--Max Plank--Thank's
+--22:10:47.646--Trim--quit
+--22:10:57.801--Max Plank--okay
+--22:11:01.923--Max Plank--i am going
+--22:11:03.246--Max Plank--quit
+--22:11:48.553--Eye--quit

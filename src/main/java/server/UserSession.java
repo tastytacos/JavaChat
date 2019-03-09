@@ -1,69 +1,98 @@
 package server;
 
-import lombok.Data;
+import message.*;
 import org.joda.time.LocalTime;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 import java.util.List;
 
-@Data
+
 public class UserSession extends Thread {
     private Socket socket;
-    private DataOutputStream outputStream;
-    private MessageManager manager = FileManager.getInstance(Server.getMessagesStorage());
-    private DataInputStream inputStream;
+
+    private MessageManager manager = TextFileManager.getInstance(Server.getMessagesStorage());
+    private ObjectOutputStream outputStream;
+    private ObjectInputStream inputStream;
+
+    public String getUsername() {
+        return username;
+    }
+
     private String username;
 
     UserSession(Socket socket) {
         System.out.println(Server.getMessagesStorage().getAbsolutePath());
         this.socket = socket;
         try {
-            outputStream = new DataOutputStream(socket.getOutputStream());
-            inputStream = new DataInputStream(socket.getInputStream());
+            outputStream = new ObjectOutputStream(socket.getOutputStream());
+            inputStream = new ObjectInputStream(socket.getInputStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public ObjectOutputStream getOutputStream() {
+        return outputStream;
     }
 
 
     @Override
     public void run() {
         try {
-            username = inputStream.readUTF();
-            sendMessageToUser("Welcome to the chat, " + username);
-            sendMessageToUser("Enjoy chatting");
-            List<String> previousMessages = manager.getNMessages(Server.getMessagesToGet());
-            if (previousMessages == null) {
-                sendMessageToUser("You are first in this chat!");
-            } else {
-                sendMessageToUser("----------------------------");
-                previousMessages.forEach(this::sendMessageToUser);
-                sendMessageToUser("----------------------------");
-            }
+            Message message = (Message) inputStream.readObject();
+            username = message.getMessageAuthor();
+            sendMessageToUser(MessageFactory.getTextMessage("Welcome to the chat, " + username));
+            sendMessageToUser(MessageFactory.getTextMessage("Enjoy chatting"));
+            sendEveryoneExceptUserMessage(MessageFactory.getTextMessage("User " + username + " joined the chat"));
+            showLastNMessages(Server.getAmountMessagesToGet());
             while (true) {
-                String userInput = inputStream.readUTF();
-                log(userInput);
-                if (userInput.equalsIgnoreCase("quit")) {
-                    sendEveryoneMessage("User " + this.getId() + " left the chat");
+                TextMessage userMessage = (TextMessage) inputStream.readObject();
+                log(userMessage);
+                if (userMessage.getMessageText().equalsIgnoreCase("quit")) {
+                    sendEveryoneMessage(MessageFactory.getTextMessage("User " + username + " left the chat"));
                     disconnect();
                     break;
                 }
-                sendEveryoneMessage(userInput);
+                sendEveryoneMessage(userMessage);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void sendMessageToUser(String message) {
+    private void showLastNMessages(int amountMessages) {
+        List<TextMessage> previousMessages = manager.getNTextMessages(amountMessages);
+        if (previousMessages == null) {
+            sendMessageToUser(MessageFactory.getTextMessage("You are first in this chat!"));
+        } else {
+            sendMessageToUser(MessageFactory.getTextMessage("----------------------------"));
+            previousMessages.forEach(this::sendMessageToUser);
+            sendMessageToUser(MessageFactory.getTextMessage("----------------------------"));
+        }
+
+    }
+
+
+    private void sendEveryoneExceptUserMessage(Message Message) {
+        List<UserSession> userSessions = Server.getSessions();
+        userSessions.forEach(userSession -> {
+            if (userSession != this) {
+                try {
+                    userSession.getOutputStream().writeObject(Message);
+                } catch (IOException e) {
+                    System.out.println("Message sending to " + userSession.getUsername() + " failed");
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void sendMessageToUser(Message message) {
         try {
-            outputStream.writeUTF(message);
+            outputStream.writeObject(message);
         } catch (IOException e) {
-            System.out.println("Message delivery failed");
+            System.out.println("Message delivery to " + username + " failed");
             e.printStackTrace();
         }
     }
@@ -72,9 +101,10 @@ public class UserSession extends Thread {
         return new LocalTime();
     }
 
-    private void log(String userInput) {
-        String message = "On " + getTime() + " " + username + " wrote - " + userInput;
-        System.out.println(message);
+    private void log(Message message) {
+        TextMessage textMessage = (TextMessage) message;
+        String sout = "On " + textMessage.getMessageTime() + " " + username + " wrote - " + textMessage.getMessageText();
+        System.out.println(sout);
         manager.writeMessage(message);
     }
 
@@ -90,21 +120,14 @@ public class UserSession extends Thread {
         }
     }
 
-    private void sendEveryoneMessage(String text) {
+    private void sendEveryoneMessage(Message message) {
         List<UserSession> users = Server.getSessions();
         users.forEach(user -> {
-            String message = handleMessage(text);
             try {
-                user.getOutputStream().writeUTF(message);
+                user.getOutputStream().writeObject(message);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
     }
-
-    private String handleMessage(String input) {
-        return username + " on " + getTime() + ": " + input;
-    }
-
-
 }

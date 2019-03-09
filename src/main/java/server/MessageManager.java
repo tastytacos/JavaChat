@@ -1,8 +1,11 @@
 package server;
 
+import message.Message;
+import message.TextMessage;
+
 import java.util.List;
 
-interface MessageManager {
-    void writeMessage(String message);
-    List<String> getNMessages(int messagesAmount);
+public interface MessageManager {
+    void writeMessage(Message message);
+    List<TextMessage> getNTextMessages(int messagesAmount);
 }
