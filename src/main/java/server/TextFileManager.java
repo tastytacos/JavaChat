@@ -2,7 +2,10 @@ package server;
 
 import message.Message;
 import message.TextMessage;
+import org.joda.time.DateTime;
 import org.joda.time.LocalTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.io.*;
 
@@ -32,7 +35,7 @@ public class TextFileManager implements MessageManager {
     public void writeMessage(Message message) {
         try (FileWriter fileWriter = new FileWriter(messagesBaseFile, true)) {
             TextMessage textMessage = (TextMessage) message;
-            fileWriter.append(messageDelimiter + textMessage.getMessageTime());
+            fileWriter.append(messageDelimiter + textMessage.getFormattedMessageTime(textMessage.getMessageTime()));
             fileWriter.append(messageDelimiter + textMessage.getMessageAuthor() + messageDelimiter);
             fileWriter.append(textMessage.getMessageText());
             fileWriter.append(System.lineSeparator());
@@ -49,7 +52,7 @@ public class TextFileManager implements MessageManager {
             while ((line = randomAccessFile.readLine()) != null) {
                 String messageText = handleMessageText(line);
                 String author = handleAuthor(line);
-                LocalTime time = handleTime(line);
+                DateTime time = handleTime(line);
                 messages.add(new TextMessage(messageText, author, time));
             }
             if (messages.size() > messagesAmount){
@@ -62,9 +65,9 @@ public class TextFileManager implements MessageManager {
         return null;
     }
 
-    private org.joda.time.LocalTime handleTime(String line) {
+    private DateTime handleTime(String line) {
         String[] strings = line.split(messageDelimiter);
-        LocalTime localTime = LocalTime.parse(strings[1]);
+        DateTime localTime = Message.dateTimeFromString(strings[1]);
         return localTime;
     }
 

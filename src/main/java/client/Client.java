@@ -4,6 +4,7 @@ package client;
 import manager.ConfigurationDataManager;
 import message.Message;
 import message.TextMessage;
+import org.joda.time.DateTime;
 import org.joda.time.LocalTime;
 
 import java.io.*;
@@ -60,10 +61,10 @@ public class Client {
         }
         System.out.println("Enter your nickname: ");
         String userName = scanner.nextLine();
-        client.sendMessage(new Message(userName, new LocalTime()));
+        client.sendMessage(new Message(userName, new DateTime()));
         while (true) {
             String message = scanner.nextLine();
-            client.sendMessage(new TextMessage(message, userName, new LocalTime()));
+            client.sendMessage(new TextMessage(message, userName, new DateTime()));
             if (message.equalsIgnoreCase("quit")) {
                 break;
             }
@@ -124,7 +125,7 @@ public class Client {
         }
     }
     private void displayMessage(TextMessage textMessage) {
-        System.out.println(textMessage.getMessageTime() + " " + textMessage.getMessageAuthor() +
+        System.out.println(textMessage.getFormattedMessageTime(textMessage.getMessageTime()) + " " + textMessage.getMessageAuthor() +
                 " > " + textMessage.getMessageText());
     }
 }

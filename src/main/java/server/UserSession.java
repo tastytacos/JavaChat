@@ -97,13 +97,10 @@ public class UserSession extends Thread {
         }
     }
 
-    private LocalTime getTime() {
-        return new LocalTime();
-    }
 
     private void log(Message message) {
         TextMessage textMessage = (TextMessage) message;
-        String sout = "On " + textMessage.getMessageTime() + " " + username + " wrote - " + textMessage.getMessageText();
+        String sout = "On " + textMessage.getFormattedMessageTime(textMessage.getMessageTime()) + " " + username + " wrote - " + textMessage.getMessageText();
         System.out.println(sout);
         manager.writeMessage(message);
     }
