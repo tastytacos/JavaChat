@@ -1,7 +1,7 @@
 package server;
 
 import message.*;
-import org.joda.time.LocalTime;
+import server.database.DatabaseManager;
 
 import java.io.*;
 import java.net.Socket;
@@ -11,7 +11,9 @@ import java.util.List;
 public class UserSession extends Thread {
     private Socket socket;
 
-    private MessageManager manager = TextFileManager.getInstance(Server.getMessagesStorage());
+//    private MessageManager manager = TextFileManager.getInstance(Server.getMessagesStorage());
+    private MessageManager manager = new DatabaseManager();
+
     private ObjectOutputStream outputStream;
     private ObjectInputStream inputStream;
 
@@ -48,12 +50,12 @@ public class UserSession extends Thread {
             showLastNMessages(Server.getAmountMessagesToGet());
             while (true) {
                 TextMessage userMessage = (TextMessage) inputStream.readObject();
-                log(userMessage);
                 if (userMessage.getMessageText().equalsIgnoreCase("quit")) {
                     sendEveryoneMessage(MessageFactory.getTextMessage("User " + username + " left the chat"));
                     disconnect();
                     break;
                 }
+                log(userMessage);
                 sendEveryoneMessage(userMessage);
             }
         } catch (Exception e) {

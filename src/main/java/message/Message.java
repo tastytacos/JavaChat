@@ -1,7 +1,6 @@
 package message;
 
 import org.joda.time.DateTime;
-import org.joda.time.LocalTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -9,7 +8,9 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class Message implements Serializable {
-    private static transient DateTimeFormatter formatter = DateTimeFormat.forPattern("MM-dd-yyyy HH:mm:ss");
+//    private static transient DateTimeFormatter formatter = DateTimeFormat.forPattern("MM-dd-yyyy HH:mm:ss");
+    private static transient DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+
     public Message() {
     }
 
