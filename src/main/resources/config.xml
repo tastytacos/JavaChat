@@ -5,5 +5,5 @@
     <admin-username>Admin</admin-username>
     <text-file-storage-name>Messages.txt</text-file-storage-name>
     <amount-messages-to-get>10</amount-messages-to-get>
-    <maximum-users-amount>10</maximum-users-amount>
+    <maximum-users-amount>3</maximum-users-amount>
 </configuration>
