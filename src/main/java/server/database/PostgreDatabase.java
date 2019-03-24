@@ -6,6 +6,8 @@ import org.joda.time.DateTime;
 import org.joda.time.LocalDateTime;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 class PostgreDatabase extends Database {
     private String url = "jdbc:postgresql://localhost:5432/db_messages";
@@ -69,6 +71,26 @@ class PostgreDatabase extends Database {
             e.printStackTrace();
         }
         return message;
+    }
+
+    @Override
+    protected List<Message> getAllMessages() {
+        List<Message> messages = new ArrayList<>();
+        try (Connection connection = getConnection()){
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM " + messagesTableName + ";");
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()){
+                String message_author = resultSet.getString("author");
+                String message_text = resultSet.getString("message_text");
+                Timestamp message_time = resultSet.getTimestamp("message_time");
+                DateTime dateTime = new DateTime(message_time.getTime());
+                messages.add(new TextMessage(message_text, message_author, dateTime));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return messages;
     }
 
 }

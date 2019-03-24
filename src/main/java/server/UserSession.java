@@ -64,7 +64,8 @@ public class UserSession extends Thread {
     }
 
     private void showLastNMessages(int amountMessages) {
-        List<TextMessage> previousMessages = manager.getNTextMessages(amountMessages);
+        // todo this function doesn't show last messages from users in runtime
+        List<Message> previousMessages = manager.getNTextMessages(amountMessages);
         if (previousMessages == null) {
             sendMessageToUser(MessageFactory.getTextMessage("You are first in this chat!"));
         } else {

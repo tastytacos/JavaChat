@@ -3,9 +3,6 @@ package server;
 import message.Message;
 import message.TextMessage;
 import org.joda.time.DateTime;
-import org.joda.time.LocalTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 import java.io.*;
 
@@ -45,8 +42,8 @@ public class TextFileManager implements MessageManager {
     }
 
     @Override
-    public List<TextMessage> getNTextMessages(int messagesAmount) {
-        List<TextMessage> messages = new ArrayList<>();
+    public List<Message> getNTextMessages(int messagesAmount) {
+        List<Message> messages = new ArrayList<>();
         try (RandomAccessFile randomAccessFile = new RandomAccessFile(messagesBaseFile, "r")) {
             String line;
             while ((line = randomAccessFile.readLine()) != null) {

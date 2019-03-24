@@ -1,7 +1,6 @@
 package server.database;
 
 import message.Message;
-import message.TextMessage;
 import server.MessageManager;
 
 import java.sql.Connection;
@@ -24,16 +23,10 @@ public class DatabaseManager implements MessageManager {
     }
 
     @Override
-    public List<TextMessage> getNTextMessages(int messagesToGet) {
-        List<TextMessage> textMessages = new ArrayList<>();
+    public List<Message> getNTextMessages(int messagesToGet) {
+        List<Message> textMessages;
         synchronized (this) {
-            // todo this is a very very bad solution. It works but it must be remastered in next versions
-            int messagesAmount = database.getMessagesAmount();
-            for (int i = 1; i <= messagesAmount; i++) {
-                TextMessage textMessage = null;
-                textMessage = (TextMessage) database.getMessageById(i);
-                textMessages.add(textMessage);
-            }
+            textMessages = database.getAllMessages();
         }
         if (textMessages.size() > messagesToGet) {
             return textMessages.subList(textMessages.size() - messagesToGet, textMessages.size());
