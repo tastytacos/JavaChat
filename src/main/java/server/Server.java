@@ -10,9 +10,12 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Server {
     private static String adminUsername = ConfigurationDataManager.getValueByXMLTag("admin-username");
+    private static ExecutorService executorService = Executors.newFixedThreadPool(3);
 
     public synchronized static List<UserSession> getSessions() {
         return sessions;
@@ -42,16 +45,10 @@ public class Server {
                 Socket socket = serverSocket.accept();
                 System.out.println("Got the connection with address - " + socket.getInetAddress() +
                         " on port " + socket.getPort());
-                if (sessions.size() >= maximumUsersAmount) {
-                    try (DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream())) {
-                        dataOutputStream.writeUTF("Server can not accept more, than 10 users");
-                        socket.close();
-                    }
-                } else {
-                    UserSession userSession = new UserSession(socket);
-                    sessions.add(userSession);
-                    userSession.start();
-                }
+                UserSession userSession = new UserSession(socket);
+                sessions.add(userSession);
+                executorService.submit(userSession);
+
             }
 
         } catch (IOException e) {
